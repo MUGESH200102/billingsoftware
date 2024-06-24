@@ -1,0 +1,28 @@
+<?php
+include 'dbconfig.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $sl_no = intval($_POST['sl_no']);
+    $cgst = floatval($_POST['cgst']);
+    $cgst_value = floatval($_POST['cgst_value']);
+    $sgst = floatval($_POST['sgst']);
+    $sgst_value = floatval($_POST['sgst_value']);
+    $total_value = floatval($_POST['total_value']);
+    $total_amount = floatval($_POST['totalAmount']);
+
+    $sql = "INSERT INTO tax_details (sl_no, cgst, cgst_value, sgst, sgst_value, total_value, total_amount) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("idddd", $sl_no, $cgst, $cgst_value, $sgst, $sgst_value, $total_value, $total_amount);
+
+    if ($stmt->execute()) {
+        echo "New tax details inserted successfully.";
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
+    $conn->close();
+}
+?>

@@ -1,0 +1,40 @@
+<?php
+include 'dbconfig.php';
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sql = "SELECT * FROM invoices WHERE id = $id";
+    $result = $conn->query($sql);
+    $invoice = $result->fetch_assoc();
+} else {
+    echo "No invoice ID provided.";
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Invoice</title>
+</head>
+<body>
+
+<h2>Invoice Details</h2>
+<?php if ($invoice): ?>
+    <p><strong>ID:</strong> <?php echo $invoice['id']; ?></p>
+    <p><strong>Invoice No:</strong> <?php echo $invoice['invoice_no']; ?></p>
+    <p><strong>Invoice Date:</strong> <?php echo date('Y-m-d', strtotime($invoice['invoice_date'])); ?></p>
+    <p><strong>From Details:</strong> <?php echo $invoice['from_details']; ?></p>
+    <p><strong>To Details:</strong> <?php echo $invoice['to_details']; ?></p>
+    <p><strong>Total Amount:</strong> <?php echo $invoice['total_amount']; ?></p>
+    <p><strong>SGST:</strong> <?php echo $invoice['sgst']; ?></p>
+    <p><strong>CGST:</strong> <?php echo $invoice['cgst']; ?></p>
+    <p><strong>Grand Total:</strong> <?php echo $invoice['grand_total']; ?></p>
+<?php else: ?>
+    <p>No invoice found.</p>
+<?php endif; ?>
+
+<a href="sales_display.php">Back to Sales Records</a>
+
+</body>
+</html>
